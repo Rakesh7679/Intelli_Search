@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
 import {useNavigate} from 'react-router';
 import { useAuth } from '../hook/useAuth';
+import {useSelector} from 'react-redux';
+import {Navigate} from 'react-router';
 
 const Login = () => {
 
   const navigate = useNavigate();
   const {handaleLogin} = useAuth();
+
+  const user = useSelector((state) => state.auth.user);
+  const loading = useSelector((state) => state.auth.loading);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -32,6 +37,10 @@ const Login = () => {
     await handaleLogin(payload);
     // Navigate to the dashboard or home page after successful login
     navigate('/');
+  }
+
+  if(!loading && user){
+    return <Navigate to="/" replace />
   }
 
   return (
