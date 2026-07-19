@@ -13,10 +13,12 @@ export const useChat = () => {
       dispatch(setLoading(true));
       const data = await sendMessage(message, chatId);
       const {chat, aiMessage} = data;
-      dispatch(createNewChat({
-         chatId: chat._id,
-         title: chat.title
-      }))
+      if (!chatId) {
+         dispatch(createNewChat({
+            chatId: chat._id,
+            title: chat.title
+         }))
+      }
       dispatch(addNewMessage({
          chatId: chat._id,
          content: message,
